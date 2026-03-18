@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel Admin — FotoShop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body class="admin-body">
+
+  <!-- tela de login -->
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-card">
+      <div class="logo" style="margin-bottom:1.5rem">
+        <span class="logo-icon">🔐</span>
+        <span class="logo-text">Admin</span>
+      </div>
+      <h2 style="margin-bottom:1rem">Painel Administrativo</h2>
+      <input type="password" id="senhaInput" placeholder="Senha de acesso" class="login-input" />
+      <button class="btn-submit" id="btnLogin" style="margin-top:.75rem">Entrar</button>
+      <p class="login-hint">Senha padrão: <code>shopee2024</code></p>
+    </div>
+  </div>
+
+  <!-- conteúdo do painel (oculto antes do login) -->
+  <div id="adminContent" hidden>
+
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo">
+          <span class="logo-icon">📸</span>
+          <span class="logo-text">FotoShop</span>
+          <span class="admin-badge">Admin</span>
+        </div>
+        <div style="display:flex;gap:1rem;align-items:center">
+          <a href="index.html" class="admin-link">← Área do Cliente</a>
+          <button class="btn-logout" id="btnLogout">Sair</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container admin-main">
+
+      <!-- métricas rápidas -->
+      <div class="metrics-grid" id="metricsGrid">
+        <div class="metric-card">
+          <span class="metric-label">Total de Pedidos</span>
+          <span class="metric-value" id="metricTotal">—</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Total de Fotos</span>
+          <span class="metric-value" id="metricFotos">—</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Último Recebido</span>
+          <span class="metric-value" id="metricUltimo">—</span>
+        </div>
+      </div>
+
+      <!-- barra de busca + filtro -->
+      <div class="toolbar">
+        <input type="search" id="searchInput" placeholder="Buscar por ID ou nome…" class="search-input" />
+        <select id="filterSize" class="filter-select">
+          <option value="">Todos os tamanhos</option>
+          <option value="10x15">10×15</option>
+          <option value="13x18">13×18</option>
+          <option value="15x21">15×21</option>
+          <option value="20x30">20×30</option>
+          <option value="A4">A4</option>
+          <option value="A3">A3</option>
+        </select>
+        <button class="btn-refresh" id="btnRefresh">↺ Atualizar</button>
+      </div>
+
+      <!-- tabela de pedidos -->
+      <div class="table-wrap">
+        <table class="admin-table" id="pedidosTable">
+          <thead>
+            <tr>
+              <th>Pedido</th>
+              <th>Cliente</th>
+              <th>Tamanho</th>
+              <th>Fotos</th>
+              <th>Data</th>
+              <th>Código</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="pedidosBody">
+            <tr><td colspan="7" class="table-empty">Carregando…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>
