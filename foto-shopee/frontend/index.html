@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Envio de Fotos — Minha Loja</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ── cabeçalho ─────────────────────────────────────────────────────── -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">📸</span>
+        <span class="logo-text">FotoShop</span>
+      </div>
+      <a href="admin.html" class="admin-link">Painel Admin</a>
+    </div>
+  </header>
+
+  <!-- ── hero ──────────────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero-badge">Loja Oficial Shopee</div>
+    <h1 class="hero-title">Envie suas fotos<br /><em>com facilidade</em></h1>
+    <p class="hero-subtitle">Informe o número do pedido e faça o upload das imagens para impressão.</p>
+  </section>
+
+  <!-- ── formulário principal ──────────────────────────────────────────── -->
+  <main class="container">
+    <form id="uploadForm" class="card" novalidate>
+
+      <!-- linha 1: pedido + nome -->
+      <div class="form-row">
+        <div class="form-group required">
+          <label for="pedidoId">Nº do Pedido <span class="req-star">*</span></label>
+          <input
+            type="text"
+            id="pedidoId"
+            name="pedidoId"
+            placeholder="Ex: 123456789012"
+            maxlength="50"
+            autocomplete="off"
+          />
+          <span class="field-hint">Encontre no app Shopee → Meus Pedidos</span>
+        </div>
+
+        <div class="form-group">
+          <label for="nomeCliente">Seu Nome</label>
+          <input
+            type="text"
+            id="nomeCliente"
+            name="nomeCliente"
+            placeholder="Opcional"
+            maxlength="80"
+          />
+        </div>
+      </div>
+
+      <!-- linha 2: tamanho + quantidade -->
+      <div class="form-row">
+        <div class="form-group required">
+          <label for="tamanho">Tamanho das Fotos <span class="req-star">*</span></label>
+          <select id="tamanho" name="tamanho">
+            <option value="">Selecione o tamanho</option>
+            <option value="10x15">10×15 cm (padrão)</option>
+            <option value="13x18">13×18 cm</option>
+            <option value="15x21">15×21 cm</option>
+            <option value="20x30">20×30 cm</option>
+            <option value="A4">A4 (21×29,7 cm)</option>
+            <option value="A3">A3 (29,7×42 cm)</option>
+          </select>
+        </div>
+
+        <div class="form-group required">
+          <label for="quantidade">Quantidade de Fotos <span class="req-star">*</span></label>
+          <input
+            type="number"
+            id="quantidade"
+            name="quantidade"
+            placeholder="Ex: 10"
+            min="1"
+            max="100"
+          />
+          <span class="field-hint">Deve bater com o número de arquivos</span>
+        </div>
+      </div>
+
+      <!-- área de upload drag-and-drop -->
+      <div class="form-group full-width">
+        <label>Fotos <span class="req-star">*</span></label>
+        <div class="dropzone" id="dropzone">
+          <div class="dropzone-inner" id="dropzoneInner">
+            <div class="drop-icon">🖼️</div>
+            <p class="drop-title">Arraste suas fotos aqui</p>
+            <p class="drop-sub">ou</p>
+            <button type="button" class="btn-select" id="btnSelect">Escolher Arquivos</button>
+            <p class="drop-note">JPG / PNG — até 10 MB por foto</p>
+          </div>
+          <input
+            type="file"
+            id="fileInput"
+            name="fotos"
+            accept=".jpg,.jpeg,.png"
+            multiple
+            hidden
+          />
+        </div>
+
+        <!-- preview das miniaturas -->
+        <div class="preview-grid" id="previewGrid"></div>
+
+        <!-- contador de arquivos selecionados -->
+        <div class="file-count" id="fileCount"></div>
+      </div>
+
+      <!-- barra de progresso (oculta até o envio) -->
+      <div class="progress-wrap" id="progressWrap" hidden>
+        <div class="progress-label">
+          <span>Enviando fotos…</span>
+          <span id="progressPct">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+
+      <!-- botão de envio -->
+      <button type="submit" class="btn-submit" id="btnSubmit">
+        <span class="btn-text">Enviar Fotos</span>
+        <span class="btn-icon">→</span>
+      </button>
+
+    </form>
+
+    <!-- modal de sucesso -->
+    <div class="modal-overlay" id="successModal" hidden>
+      <div class="modal-card">
+        <div class="modal-icon">✅</div>
+        <h2>Fotos enviadas!</h2>
+        <p>Seu pedido foi recebido com sucesso.</p>
+        <div class="codigo-box">
+          <span class="codigo-label">Código de envio</span>
+          <span class="codigo-valor" id="codigoEnvio">—</span>
+        </div>
+        <p class="modal-note">Guarde esse código — ele identifica seu envio.</p>
+        <button class="btn-submit" onclick="resetForm()">Enviar Mais Fotos</button>
+      </div>
+    </div>
+
+    <!-- modal de erro -->
+    <div class="modal-overlay" id="errorModal" hidden>
+      <div class="modal-card modal-card--error">
+        <div class="modal-icon">⚠️</div>
+        <h2>Algo deu errado</h2>
+        <p id="errorMsg">Erro desconhecido.</p>
+        <button class="btn-submit btn-submit--outline" onclick="closeModal('errorModal')">Tentar Novamente</button>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <p>Dúvidas? Fale conosco pelo chat da Shopee.</p>
+  </footer>
+
+  <script src="js/upload.js"></script>
+</body>
+</html>
