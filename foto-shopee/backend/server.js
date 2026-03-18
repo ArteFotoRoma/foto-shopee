@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3000;
 app.set('trust proxy', 1);
 
 // frontend fica em ../frontend relativo ao backend/
-const frontendDir = path.join(__dirname, '..', 'frontend');
+const frontendDir = path.join(__dirname, 'frontend');
 
 // garante pasta de uploads (fallback local)
 const uploadsDir = path.join(__dirname, '..', 'uploads');
